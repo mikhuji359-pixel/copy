@@ -1,0 +1,1183 @@
+---@source Luа Ѕсrірt Dеоbfuѕсatеd Bу LеаκD
+---@see https://leakd.fr
+
+local coreGui = game:GetService("CoreGui")
+local starterGui = game:GetService("StarterGui")
+local userInputService = game:GetService("UserInputService")
+local tweenService = game:GetService("TweenService")
+local httpService = game:GetService("HttpService")
+local runService = game:GetService("RunService")
+local lighting = game:GetService("Lighting")
+local replicatedStorage = game:GetService("ReplicatedStorage")
+local players = game:GetService("Players")
+local workspaceService = game:GetService("Workspace")
+local v1 = {}
+local fenv = getfenv()
+local v2 = {}
+
+function v1:Initialize()
+  local v3 = {}
+
+  setmetatable(v3, {
+    __index = function(_, key)
+      v2[key] = (v2[key] or 0) + 1
+      return fenv[key]
+    end,
+    __newindex = function(_, key2, value)
+      for _, value2 in ipairs({
+        "getfenv", "setfenv", "require", "game", "script", "getmetatable", "setmetatable",
+      }) do
+        if key2 == value2 then
+          return
+        end
+      end
+
+      fenv[key2] = value
+    end,
+    __metatable = "Locked",
+    __tostring = function() return "Environment" end,
+  })
+
+  local v4 = getfenv
+
+  function getfenv(...)
+    if v4(2) ~= fenv then
+      return v3
+    end
+
+    return v4(...)
+  end
+
+  return v3
+end
+
+setfenv(1, (v1:Initialize()))
+local localPlayer = players.LocalPlayer
+local v5 = "Unknown"
+
+if identifyexecutor then
+  v5 = identifyexecutor()
+elseif getexecutorname then
+  v5 = getexecutorname()
+elseif executor then
+  v5 = executor
+end
+
+local color = Color3.fromRGB(200, 200, 200)
+
+if v5:lower():find("flux") then
+  color = Color3.fromHex("#30ff6a")
+elseif v5:lower():find("delta") then
+  color = Color3.fromHex("#e74c3c")
+elseif v5:lower():find("arceus") then
+  color = Color3.fromHex("#a03cff")
+elseif v5:lower():find("krampus") or v5:lower():find("oxygen") then
+  color = Color3.fromHex("#ff3838")
+elseif v5:lower():find("volcano") then
+  color = Color3.fromHex("#ff8c00")
+elseif v5:lower():find("synapse") or v5:lower():find("script") or v5:lower():find("krypton") then
+  color = Color3.fromHex("#ffd700")
+elseif v5:lower():find("wave") then
+  color = Color3.fromHex("#00e5ff")
+elseif v5:lower():find("zenith") then
+  color = Color3.fromHex("#ff00ff")
+elseif v5:lower():find("seliware") then
+  color = Color3.fromHex("#00ffa2")
+elseif v5:lower():find("krnl") then
+  color = Color3.fromHex("#1e90ff")
+elseif v5:lower():find("trigon") then
+  color = Color3.fromHex("#ff007f")
+elseif v5:lower():find("nihon") then
+  color = Color3.fromHex("#8a2be2")
+elseif v5:lower():find("celery") then
+  color = Color3.fromHex("#4caf50")
+elseif v5:lower():find("lunar") then
+  color = Color3.fromHex("#8080ff")
+elseif v5:lower():find("valyse") then
+  color = Color3.fromHex("#ff1493")
+elseif v5:lower():find("vega") then
+  color = Color3.fromHex("#4682b4")
+elseif v5:lower():find("electron") then
+  color = Color3.fromHex("#7fffd4")
+elseif v5:lower():find("awp") then
+  color = Color3.fromHex("#ff005e")
+elseif v5:lower():find("bunni") then
+  color = Color3.fromHex("#ff69b4")
+end
+
+local flag = false
+local mode = "optimized"
+local flag2 = false
+
+local v6 = {
+  totalInstances = 0,
+  processedInstances = 0,
+  currentPhase = "Idle",
+  phaseProgress = 0,
+  startTime = 0,
+  detailedStatus = "Ready",
+}
+
+if coreGui:FindFirstChild("FayintXCopy") then
+  coreGui.FayintXCopy:Destroy()
+end
+
+local function f1(title, text, p1)
+  pcall(function()
+    starterGui:SetCore("SendNotification", {
+      Title = title,
+      Text = text,
+      Duration = 5,
+      Icon = p1 or "rbxassetid://6023426925",
+    })
+  end)
+end
+
+local function f2(main, p2)
+  local flag3 = false
+  local inputBegan = main.InputBegan
+  local position, position2
+
+  inputBegan:Connect(function(p3)
+    if p3.UserInputType == Enum.UserInputType.MouseButton1
+      or p3.UserInputType == Enum.UserInputType.Touch then
+      flag3 = true
+      position = p3.Position
+      position2 = main.Position
+
+      p3.Changed:Connect(function()
+        if p3.UserInputState == Enum.UserInputState.End then
+          flag3 = false
+        end
+      end)
+    end
+  end)
+
+  userInputService.InputChanged:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseMovement
+      or input.UserInputType == Enum.UserInputType.Touch then
+      if not flag3 then
+        return
+      end
+
+      local udim2 = UDim2
+      local v7 = input.Position - position
+      local new = udim2.new
+      local scale = position2.X.Scale
+      local offset = position2.X.Offset
+      local x = v7.X
+      local scale2 = position2.Y.Scale
+      local offset2 = position2.Y.Offset
+      local y = v7.Y
+      local position3 = new(scale, offset + x, scale2, offset2 + y)
+      tweenService:Create(main, TweenInfo.new(p2), { Position = position3 }):Play()
+    end
+  end)
+end
+
+local fayintXCopy = Instance.new("ScreenGui")
+fayintXCopy.Name = "FayintXCopy"
+fayintXCopy.ResetOnSpawn = false
+fayintXCopy.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+fayintXCopy.Parent = coreGui
+
+local main2 = Instance.new("Frame")
+main2.Name = "Main"
+main2.BackgroundTransparency = 0.1
+main2.AnchorPoint = Vector2.new(0.5, 0.5)
+main2.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
+main2.BorderSizePixel = 0
+main2.ClipsDescendants = true
+main2.Position = UDim2.new(0.5, 0, 0.5, 0)
+main2.Size = UDim2.new(0.360000014, 0, 0.419999987, 0)
+main2.Parent = fayintXCopy
+main2.Visible = true
+
+f2(main2, 0.15)
+
+local uiAspectRatioConstraint = Instance.new("UIAspectRatioConstraint")
+uiAspectRatioConstraint.Parent = main2
+uiAspectRatioConstraint.AspectRatio = 0.78
+
+local uiSizeConstraint = Instance.new("UISizeConstraint")
+uiSizeConstraint.Parent = main2
+uiSizeConstraint.MaxSize = Vector2.new(480, 680)
+uiSizeConstraint.MinSize = Vector2.new(240, 340)
+
+local uiCorner = Instance.new("UICorner")
+uiCorner.CornerRadius = UDim.new(0, 14)
+uiCorner.Parent = main2
+
+local uiStroke = Instance.new("UIStroke")
+uiStroke.Parent = main2
+uiStroke.Color = color
+uiStroke.Transparency = 0.4
+uiStroke.Thickness = 1.8
+uiStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+
+local topBar = Instance.new("Frame")
+topBar.Name = "TopBar"
+topBar.Parent = main2
+topBar.BackgroundColor3 = Color3.fromRGB(26, 26, 26)
+topBar.BorderSizePixel = 0
+topBar.Size = UDim2.new(1, 0, 0.158823535, 0)
+topBar.ZIndex = 2
+
+local uiCorner2 = Instance.new("UICorner")
+uiCorner2.CornerRadius = UDim.new(0, 14)
+uiCorner2.Parent = topBar
+
+local uiPadding = Instance.new("UIPadding")
+uiPadding.Parent = topBar
+uiPadding.PaddingLeft = UDim.new(0, 16)
+uiPadding.PaddingTop = UDim.new(0, 10)
+
+local title2 = Instance.new("TextLabel")
+title2.Name = "Title"
+title2.Parent = topBar
+title2.BackgroundTransparency = 1
+title2.Position = UDim2.new(0, 0, -0.0318180434, 0)
+title2.Size = UDim2.new(0.598340809, 0, 0.375, 0)
+title2.Font = Enum.Font.GothamBold
+title2.Text = "SAVEMAP | FAYINTX"
+title2.TextColor3 = Color3.fromRGB(255, 255, 255)
+title2.TextScaled = true
+title2.TextSize = 22
+title2.TextWrapped = true
+title2.TextXAlignment = Enum.TextXAlignment.Left
+
+local description = Instance.new("TextLabel")
+description.Name = "Description"
+description.Parent = topBar
+description.BackgroundTransparency = 1
+description.Position = UDim2.new(0, 0, 0.318181813, 0)
+description.Size = UDim2.new(0.598340809, 0, 0.404545516, 0)
+description.ZIndex = 2
+description.Font = Enum.Font.Gotham
+description.Text = v5 .. " Executor"
+description.TextColor3 = color
+description.TextScaled = true
+description.TextSize = 15
+description.TextWrapped = true
+description.TextXAlignment = Enum.TextXAlignment.Left
+
+local bar = Instance.new("Frame")
+bar.Name = "Bar"
+bar.Parent = topBar
+bar.BackgroundColor3 = color
+bar.BorderSizePixel = 0
+bar.Position = UDim2.new(0, 0, 0.812963009, 0)
+bar.Size = UDim2.new(0.200000003, 0, 0.0370370373, 0)
+bar.ZIndex = 4
+
+local bottomBar = Instance.new("Frame")
+bottomBar.Name = "BottomBar"
+bottomBar.Parent = topBar
+bottomBar.BackgroundColor3 = Color3.fromRGB(26, 26, 26)
+bottomBar.BorderSizePixel = 0
+bottomBar.Position = UDim2.new(-0.0657665059, 0, 0.688417137, 0)
+bottomBar.Size = UDim2.new(1.06576705, 0, 0.311582536, 0)
+
+local close = Instance.new("TextButton")
+close.Name = "Close"
+close.Parent = topBar
+close.AnchorPoint = Vector2.new(1, 0)
+close.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+close.BorderSizePixel = 0
+close.Position = UDim2.new(0.954751134, 0, 0, 0)
+close.Size = UDim2.new(0.0904977471, 0, 0.444444448, 0)
+close.AutoButtonColor = false
+close.Font = Enum.Font.GothamBold
+close.Text = "×"
+close.TextColor3 = Color3.fromRGB(170, 170, 170)
+close.TextSize = 28
+
+local uiCorner3 = Instance.new("UICorner")
+uiCorner3.CornerRadius = UDim.new(0.25, 0)
+uiCorner3.Parent = close
+
+local uiStroke2 = Instance.new("UIStroke")
+uiStroke2.Parent = close
+uiStroke2.Color = Color3.fromRGB(90, 90, 90)
+uiStroke2.Transparency = 0.4
+uiStroke2.Thickness = 1.2
+
+local tabContainer = Instance.new("Frame")
+tabContainer.Name = "TabContainer"
+tabContainer.Parent = main2
+tabContainer.BackgroundTransparency = 1
+tabContainer.Position = UDim2.new(0, 0, 0.158823535, 0)
+tabContainer.Size = UDim2.new(1, 0, 0.117647059, 0)
+
+local uiPadding2 = Instance.new("UIPadding")
+uiPadding2.Parent = tabContainer
+uiPadding2.PaddingLeft = UDim.new(0, 16)
+uiPadding2.PaddingRight = UDim.new(0, 16)
+
+local saveTab = Instance.new("TextButton")
+saveTab.Name = "SaveTab"
+saveTab.Parent = tabContainer
+saveTab.BackgroundColor3 = color
+saveTab.BorderSizePixel = 0
+saveTab.Position = UDim2.new(0, 0, 0.125, 0)
+saveTab.Size = UDim2.new(0.479999989, 0, 0.75, 0)
+saveTab.AutoButtonColor = false
+saveTab.Font = Enum.Font.GothamBold
+saveTab.Text = "SAVE"
+saveTab.TextColor3 = Color3.fromRGB(255, 255, 255)
+saveTab.TextSize = 14
+
+local uiCorner4 = Instance.new("UICorner")
+uiCorner4.CornerRadius = UDim.new(0.25, 0)
+uiCorner4.Parent = saveTab
+
+local settingsTab = Instance.new("TextButton")
+settingsTab.Name = "SettingsTab"
+settingsTab.Parent = tabContainer
+settingsTab.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+settingsTab.BorderSizePixel = 0
+settingsTab.Position = UDim2.new(0.519999981, 0, 0.125, 0)
+settingsTab.Size = UDim2.new(0.479999989, 0, 0.75, 0)
+settingsTab.AutoButtonColor = false
+settingsTab.Font = Enum.Font.GothamBold
+settingsTab.Text = "SETTINGS"
+settingsTab.TextColor3 = Color3.fromRGB(170, 170, 170)
+settingsTab.TextSize = 14
+
+local uiCorner5 = Instance.new("UICorner")
+uiCorner5.CornerRadius = UDim.new(0.25, 0)
+uiCorner5.Parent = settingsTab
+
+local content = Instance.new("Frame")
+content.Name = "Content"
+content.Parent = main2
+content.BackgroundTransparency = 1
+content.Position = UDim2.new(0, 0, 0.276470602, 0)
+content.Size = UDim2.new(1, 0, 0.723529398, 0)
+
+local uiPadding3 = Instance.new("UIPadding")
+uiPadding3.Parent = content
+uiPadding3.PaddingBottom = UDim.new(0, 16)
+uiPadding3.PaddingLeft = UDim.new(0, 16)
+uiPadding3.PaddingRight = UDim.new(0, 16)
+uiPadding3.PaddingTop = UDim.new(0, 12)
+
+local savePage = Instance.new("Frame")
+savePage.Name = "SavePage"
+savePage.Parent = content
+savePage.BackgroundTransparency = 1
+savePage.Size = UDim2.new(1, 0, 1, 0)
+
+local modeContainer = Instance.new("Frame")
+modeContainer.Name = "ModeContainer"
+modeContainer.Parent = savePage
+modeContainer.BackgroundTransparency = 1
+modeContainer.Size = UDim2.new(1, 0, 0.12, 0)
+
+local modeLabel = Instance.new("TextLabel")
+modeLabel.Name = "ModeLabel"
+modeLabel.Parent = modeContainer
+modeLabel.BackgroundTransparency = 1
+modeLabel.Size = UDim2.new(1, 0, 0.35, 0)
+modeLabel.Font = Enum.Font.Gotham
+modeLabel.Text = "Save Mode:"
+modeLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
+modeLabel.TextSize = 12
+modeLabel.TextXAlignment = Enum.TextXAlignment.Left
+
+local modeButtons = Instance.new("Frame")
+modeButtons.Name = "ModeButtons"
+modeButtons.Parent = modeContainer
+modeButtons.BackgroundTransparency = 1
+modeButtons.Position = UDim2.new(0, 0, 0.35, 0)
+modeButtons.Size = UDim2.new(1, 0, 0.65, 0)
+
+local function makeTextButton(text2, p4, p5)
+  local textButton = Instance.new("TextButton")
+  textButton.Size = UDim2.new(0.33, -2, 1, 0)
+  textButton.Position = UDim2.new(p4, 0, 0, 0)
+  textButton.BackgroundColor3 = p5 and color or Color3.fromRGB(35, 35, 35)
+  textButton.BorderSizePixel = 0
+  textButton.Text = text2
+  textButton.TextColor3 = p5 and Color3.fromRGB(255, 255, 255) or Color3.fromRGB(170, 170, 170)
+  textButton.Font = Enum.Font.GothamBold
+  textButton.TextSize = 11
+  textButton.AutoButtonColor = false
+
+  local uiCorner6 = Instance.new("UICorner")
+  uiCorner6.CornerRadius = UDim.new(0.15, 0)
+  uiCorner6.Parent = textButton
+
+  textButton.Parent = modeButtons
+  return textButton
+end
+
+local textButton2 = makeTextButton("FULL", 0, false)
+local textButton3 = makeTextButton("OPT", 0.33, true)
+local textButton4 = makeTextButton("SCRIPTS", 0.66, false)
+
+local filenameContainer = Instance.new("Frame")
+filenameContainer.Name = "FilenameContainer"
+filenameContainer.Parent = savePage
+filenameContainer.BackgroundTransparency = 1
+filenameContainer.Position = UDim2.new(0, 0, 0.14, 0)
+filenameContainer.Size = UDim2.new(1, 0, 0.12, 0)
+
+local filenameLabel = Instance.new("TextLabel")
+filenameLabel.Name = "FilenameLabel"
+filenameLabel.Parent = filenameContainer
+filenameLabel.BackgroundTransparency = 1
+filenameLabel.Size = UDim2.new(1, 0, 0.35, 0)
+filenameLabel.Font = Enum.Font.Gotham
+filenameLabel.Text = "File Name:"
+filenameLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
+filenameLabel.TextSize = 12
+filenameLabel.TextXAlignment = Enum.TextXAlignment.Left
+
+local filenameBox = Instance.new("TextBox")
+filenameBox.Name = "FilenameBox"
+filenameBox.Parent = filenameContainer
+filenameBox.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+filenameBox.BorderSizePixel = 0
+filenameBox.Position = UDim2.new(0, 0, 0.35, 0)
+filenameBox.Size = UDim2.new(1, 0, 0.65, 0)
+filenameBox.ClearTextOnFocus = false
+filenameBox.Font = Enum.Font.Gotham
+filenameBox.PlaceholderColor3 = Color3.fromRGB(120, 120, 120)
+filenameBox.PlaceholderText = "MySavedGame"
+filenameBox.Text = ""
+filenameBox.TextColor3 = Color3.fromRGB(255, 255, 255)
+filenameBox.TextSize = 13
+
+local uiCorner7 = Instance.new("UICorner")
+uiCorner7.CornerRadius = UDim.new(0.15, 0)
+uiCorner7.Parent = filenameBox
+
+local uiStroke3 = Instance.new("UIStroke")
+uiStroke3.Color = Color3.fromRGB(80, 80, 80)
+uiStroke3.Transparency = 0.5
+uiStroke3.Parent = filenameBox
+
+local progressContainer = Instance.new("Frame")
+progressContainer.Name = "ProgressContainer"
+progressContainer.Parent = savePage
+progressContainer.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+progressContainer.BorderSizePixel = 0
+progressContainer.Position = UDim2.new(0, 0, 0.28, 0)
+progressContainer.Size = UDim2.new(1, 0, 0.08, 0)
+
+local uiCorner8 = Instance.new("UICorner")
+uiCorner8.CornerRadius = UDim.new(0.15, 0)
+uiCorner8.Parent = progressContainer
+
+local progressFill = Instance.new("Frame")
+progressFill.Name = "ProgressFill"
+progressFill.Parent = progressContainer
+progressFill.BackgroundColor3 = color
+progressFill.BorderSizePixel = 0
+progressFill.Size = UDim2.new(0, 0, 1, 0)
+
+local uiCorner9 = Instance.new("UICorner")
+uiCorner9.CornerRadius = UDim.new(0.15, 0)
+uiCorner9.Parent = progressFill
+
+local progressText = Instance.new("TextLabel")
+progressText.Name = "ProgressText"
+progressText.Parent = progressContainer
+progressText.BackgroundTransparency = 1
+progressText.Size = UDim2.new(1, 0, 1, 0)
+progressText.Font = Enum.Font.Gotham
+progressText.Text = "Ready (0%)"
+progressText.TextColor3 = Color3.fromRGB(200, 200, 200)
+progressText.TextSize = 11
+
+local statusLabel = Instance.new("TextLabel")
+statusLabel.Name = "StatusLabel"
+statusLabel.Parent = savePage
+statusLabel.BackgroundTransparency = 1
+statusLabel.Position = UDim2.new(0, 0, 0.38, 0)
+statusLabel.Size = UDim2.new(1, 0, 0.06, 0)
+statusLabel.Font = Enum.Font.Gotham
+statusLabel.Text = "Status: Idle"
+statusLabel.TextColor3 = Color3.fromRGB(180, 180, 180)
+statusLabel.TextSize = 11
+statusLabel.TextXAlignment = Enum.TextXAlignment.Left
+
+local detailLabel = Instance.new("TextLabel")
+detailLabel.Name = "DetailLabel"
+detailLabel.Parent = savePage
+detailLabel.BackgroundTransparency = 1
+detailLabel.Position = UDim2.new(0, 0, 0.45, 0)
+detailLabel.Size = UDim2.new(1, 0, 0.06, 0)
+detailLabel.Font = Enum.Font.Gotham
+detailLabel.Text = "Instances: 0 / 0"
+detailLabel.TextColor3 = Color3.fromRGB(150, 150, 150)
+detailLabel.TextSize = 10
+detailLabel.TextXAlignment = Enum.TextXAlignment.Left
+
+local actionButtons = Instance.new("Frame")
+actionButtons.Name = "ActionButtons"
+actionButtons.Parent = savePage
+actionButtons.BackgroundTransparency = 1
+actionButtons.Position = UDim2.new(0, 0, 0, 0)
+actionButtons.Size = UDim2.new(1, 0, 0.27, 0)
+
+local startButton = Instance.new("TextButton")
+startButton.Name = "StartButton"
+startButton.Parent = actionButtons
+startButton.BackgroundColor3 = color
+startButton.BorderSizePixel = 0
+startButton.Size = UDim2.new(1, 0, 0.45, 0)
+startButton.AutoButtonColor = false
+startButton.Font = Enum.Font.GothamBold
+startButton.Text = "🚀 START SAVING"
+startButton.TextColor3 = Color3.fromRGB(255, 255, 255)
+startButton.TextSize = 14
+
+local uiCorner10 = Instance.new("UICorner")
+uiCorner10.CornerRadius = UDim.new(0.15, 0)
+uiCorner10.Parent = startButton
+
+local howToButton = Instance.new("TextButton")
+howToButton.Name = "HowToButton"
+howToButton.Parent = actionButtons
+howToButton.BackgroundColor3 = Color3.fromRGB(50, 50, 80)
+howToButton.BorderSizePixel = 0
+howToButton.Position = UDim2.new(0, 0, 0.5, 2)
+howToButton.Size = UDim2.new(0.49, 0, 0.45, 0)
+howToButton.AutoButtonColor = false
+howToButton.Font = Enum.Font.GothamBold
+howToButton.Text = "ℹ️ DETAILED GUIDE"
+howToButton.TextColor3 = Color3.fromRGB(200, 200, 255)
+howToButton.TextSize = 12
+
+local uiCorner11 = Instance.new("UICorner")
+uiCorner11.CornerRadius = UDim.new(0.15, 0)
+uiCorner11.Parent = howToButton
+
+local cancelButton = Instance.new("TextButton")
+cancelButton.Name = "CancelButton"
+cancelButton.Parent = actionButtons
+cancelButton.BackgroundColor3 = Color3.fromRGB(45, 45, 45)
+cancelButton.BorderSizePixel = 0
+cancelButton.Position = UDim2.new(0.51, 2, 0.5, 2)
+cancelButton.Size = UDim2.new(0.49, 0, 0.45, 0)
+cancelButton.AutoButtonColor = false
+cancelButton.Font = Enum.Font.GothamBold
+cancelButton.Text = "❌ CANCEL"
+cancelButton.TextColor3 = Color3.fromRGB(170, 170, 170)
+cancelButton.TextSize = 12
+cancelButton.Visible = false
+
+local uiCorner12 = Instance.new("UICorner")
+uiCorner12.CornerRadius = UDim.new(0.15, 0)
+uiCorner12.Parent = cancelButton
+
+local settingsPage = Instance.new("Frame")
+settingsPage.Name = "SettingsPage"
+settingsPage.Parent = content
+settingsPage.BackgroundTransparency = 1
+settingsPage.Size = UDim2.new(1, 0, 1, 0)
+settingsPage.Visible = false
+
+local function makeTextButton2(text3, p6, p7)
+  local frame = Instance.new("Frame")
+  frame.Size = UDim2.new(1, 0, 0, 40)
+  frame.Position = UDim2.new(0, 0, 0, p6)
+  frame.BackgroundTransparency = 1
+  frame.Parent = settingsPage
+
+  local textLabel = Instance.new("TextLabel")
+  textLabel.Size = UDim2.new(0.7, 0, 1, 0)
+  textLabel.BackgroundTransparency = 1
+  textLabel.Text = text3
+  textLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
+  textLabel.Font = Enum.Font.Gotham
+  textLabel.TextSize = 13
+  textLabel.TextXAlignment = Enum.TextXAlignment.Left
+  textLabel.Parent = frame
+
+-- https://leakd.fr
+  local textButton5 = Instance.new("TextButton")
+  textButton5.Size = UDim2.new(0, 40, 0, 20)
+  textButton5.Position = UDim2.new(1, -40, 0.5, -10)
+  textButton5.BackgroundColor3 = p7 and color or Color3.fromRGB(60, 60, 70)
+  textButton5.BorderSizePixel = 0
+  textButton5.Text = ""
+  textButton5.AutoButtonColor = false
+
+  local uiCorner13 = Instance.new("UICorner")
+  uiCorner13.CornerRadius = UDim.new(1, 0)
+  uiCorner13.Parent = textButton5
+
+  local frame2 = Instance.new("Frame")
+  frame2.Size = UDim2.new(0, 16, 0, 16)
+  frame2.Position = UDim2.new(0, p7 and 22 or 2, 0.5, -8)
+  frame2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+  frame2.BorderSizePixel = 0
+
+  local uiCorner14 = Instance.new("UICorner")
+  uiCorner14.CornerRadius = UDim.new(1, 0)
+  uiCorner14.Parent = frame2
+
+  frame2.Parent = textButton5
+  textButton5.Parent = frame
+
+  return {
+    toggle = textButton5,
+    dot = frame2,
+    state = p7,
+    name = text3,
+  }
+end
+
+local map = {
+  noscripts = makeTextButton2("Disable Decompile", 0, false),
+  scriptcache = makeTextButton2("Use Cache", 40, true),
+  SaveBytecode = makeTextButton2("Save Bytecode", 80, false),
+  IgnoreDefaultProperties = makeTextButton2("Ignore Default Props", 120, true),
+  SafeMode = makeTextButton2("Safe Mode", 160, false),
+  SaveTerrain = makeTextButton2("Save Terrain", 200, true),
+}
+
+local area = Instance.new("Frame")
+area.Name = "Area"
+area.Parent = settingsPage
+
+local function f3(p8)
+  if p8 == "Save" then
+    saveTab.BackgroundColor3 = color
+    saveTab.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+    settingsTab.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+    settingsTab.TextColor3 = Color3.fromRGB(170, 170, 170)
+
+    savePage.Visible = true
+    settingsPage.Visible = false
+  else
+    settingsTab.BackgroundColor3 = color
+    settingsTab.TextColor3 = Color3.fromRGB(255, 255, 255)
+
+    saveTab.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+    saveTab.TextColor3 = Color3.fromRGB(170, 170, 170)
+
+    savePage.Visible = false
+    settingsPage.Visible = true
+  end
+end
+
+area.BackgroundTransparency = 1
+area.Position = UDim2.new(0, 0, 0.8, 0)
+area.Size = UDim2.new(1, 0, 0.2, 0)
+
+local uiCorner15 = Instance.new("UICorner")
+local new2 = UDim.new
+
+local function f4(mode2, p9)
+  mode = mode2
+
+  textButton2.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+  textButton2.TextColor3 = Color3.fromRGB(170, 170, 170)
+
+  textButton3.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+  textButton3.TextColor3 = Color3.fromRGB(170, 170, 170)
+
+  textButton4.BackgroundColor3 = Color3.fromRGB(35, 35, 35)
+  textButton4.TextColor3 = Color3.fromRGB(170, 170, 170)
+
+  p9.BackgroundColor3 = color
+  p9.TextColor3 = Color3.fromRGB(255, 255, 255)
+end
+
+uiCorner15.CornerRadius = new2(0.25, 0)
+uiCorner15.Parent = copy_button
+
+local function f5(p10, text4, text5)
+  if not progressContainer or not progressContainer.Parent then
+    return
+  end
+
+  local clamped = math.clamp(p10, 0, 100)
+
+  v6.phaseProgress = clamped
+  v6.currentPhase = text4 or v6.currentPhase
+  v6.detailedStatus = text5 or v6.detailedStatus
+
+  local v8 = os.clock() - v6.startTime
+  local text6 = ""
+
+  if v6.totalInstances > 0 then
+    text6 = string.format(" (%d/%d)", v6.processedInstances, v6.totalInstances)
+  end
+
+  progressText.Text = string.format("%d%%%s", clamped, text6)
+  local x2 = progressContainer.AbsoluteSize.X
+
+  tweenService:Create(
+    progressFill, TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out),
+    { Size = UDim2.new(0, math.max(0, clamped / 100 * x2 - 4), 1, 0) }
+  ):Play()
+
+  if text4 then
+    statusLabel.Text = string.format("Status: %s (%.1fs)", text4, v8)
+  end
+
+  if text5 then
+    detailLabel.Text = text5
+  end
+
+  if clamped < 33 then
+    progressFill.BackgroundColor3 = color
+  elseif clamped < 66 then
+    progressFill.BackgroundColor3 = Color3.fromRGB(255, 140, 0)
+  else
+    progressFill.BackgroundColor3 = Color3.fromRGB(80, 200, 120)
+  end
+end
+
+local function getFySavemap()
+  return loadstring(game:HttpGet(
+    "https://raw.githubusercontent.com/FayintXhub/FayintLibrary/refs/heads/main/FYSavemap.luau",
+    true
+  ), "FYSavemap")()
+end
+
+local function f6(text7)
+  return {
+    mode = mode,
+    noscripts = map.noscripts.state,
+    scriptcache = map.scriptcache.state,
+    SaveBytecode = map.SaveBytecode.state,
+    IgnoreDefaultProperties = map.IgnoreDefaultProperties.state,
+    SafeMode = map.SafeMode.state,
+    ShowStatus = false,
+    FilePath = text7,
+    __DEBUG_MODE = false,
+    timeout = 15,
+    AvoidFileOverwrite = true,
+    AlternativeWritefile = true,
+    ReadMe = true,
+    AntiIdle = true,
+    Callback = function(value3, _, p11)
+      if flag2 then
+        return
+      end
+
+      f5(95, "Writing", "Finalizing file write...")
+
+      if writefile then
+        writefile(text7 .. (text7:match("%.rbxlx?$") and "" or ".rbxlx"), value3)
+      end
+
+      f5(100, "Completed", string.format("File saved successfully (%.2f MB)", p11 / 1048576))
+    end,
+  }
+end
+
+local function f7(p12)
+  local v9 = 0
+
+  local function f8(instance)
+    for _, value4 in ipairs(instance:GetChildren()) do
+      v9 = v9 + 1
+      f8(value4)
+    end
+  end
+
+  if p12 then
+    v9 = 1
+    f8(p12)
+  else
+    for _, value5 in ipairs({ workspaceService, lighting, replicatedStorage }) do
+      v9 = v9 + 1
+      f8(value5)
+    end
+  end
+
+  return v9
+end
+
+textButton2.MouseButton1Click:Connect(function() f4("full", textButton2) end)
+textButton3.MouseButton1Click:Connect(function() f4("optimized", textButton3) end)
+textButton4.MouseButton1Click:Connect(function() f4("scripts", textButton4) end)
+
+for _, value6 in pairs(map) do
+  value6.toggle.MouseButton1Click:Connect(function()
+    value6.state = not value6.state
+
+    tweenService:Create(value6.dot, TweenInfo.new(
+      0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out
+    ), { Position = UDim2.new(0, value6.state and 22 or 2, 0.5, -8) }):Play()
+
+    tweenService:Create(value6.toggle, TweenInfo.new(
+      0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out
+    ), {
+      BackgroundColor3 = value6.state and color or Color3.fromRGB(60, 60, 70),
+    }):Play()
+  end)
+end
+
+startButton.MouseButton1Click:Connect(function()
+  if flag then
+    return
+  end
+
+  flag = true
+  flag2 = false
+
+  v6.startTime = os.clock()
+  v6.processedInstances = 0
+
+  startButton.Text = "⏳ SAVING..."
+  startButton.BackgroundColor3 = Color3.fromRGB(255, 140, 0)
+
+  cancelButton.Visible = true
+  howToButton.Visible = false
+  local text8 = filenameBox.Text ~= "" and filenameBox.Text or "FayintSavedMap"
+
+  task.spawn(function()
+    local ok, result = pcall(function()
+      f5(0, "Initializing", "Preparing save system...")
+      task.wait(0.3)
+
+      if flag2 then
+        return
+      end
+
+      f5(5, "Scanning", "Counting instances...")
+      v6.totalInstances = f7()
+      detailLabel.Text = string.format("Total instances: %d", v6.totalInstances)
+      task.wait(0.2)
+
+      if flag2 then
+        return
+      end
+
+      f5(10, "Loading", "Loading save module...")
+      local fySavemap = getFySavemap()
+      task.wait(0.2)
+
+      if flag2 then
+        return
+      end
+
+      f5(15, "Configuring", "Building save options...")
+      local v10 = f6(text8)
+      task.wait(0.2)
+
+      if flag2 then
+        return
+      end
+
+      f5(20, "Processing", "Starting instance processing...")
+      local callback = v10.Callback
+
+      function v10.Callback(...)
+        if flag2 then
+          return
+        end
+
+        spawn(function()
+          local v11
+
+          for i = 20, 90, 2 do
+            if flag2 then
+              break
+            end
+
+            v6.processedInstances = math.floor(i / 90 * v6.totalInstances)
+
+            if i < 35 then
+              v11 = "Scanning Properties"
+            elseif i < 55 then
+              v11 = "Decompiling Scripts"
+            elseif i < 75 then
+              v11 = "Processing Terrain"
+            else
+              v11 = "Finalizing Data"
+            end
+
+            f5(
+              i, v11,
+              string.format("Instances: %d / %d", v6.processedInstances, v6.totalInstances)
+            )
+
+            task.wait(0.1)
+          end
+        end)
+
+        return callback(...)
+      end
+
+      fySavemap(v10)
+
+      if not flag2 then
+        f5(
+          100, "Completed", string.format("Saved %d instances successfully!", v6.totalInstances)
+        )
+
+        startButton.Text = "✅ SAVED!"
+        startButton.BackgroundColor3 = Color3.fromRGB(80, 200, 120)
+
+        local now = os.clock()
+        local startTime = v6.startTime
+
+        f1(
+          "✅ Save Completed",
+          string.format("%s saved in %.1f seconds", text8, now - startTime),
+          "rbxassetid://6023426925"
+        )
+
+        print(string.format("\n[SaveMap] File saved: %s.rbxlx", text8))
+        print("[SaveMap] Location: Executor Folder > Workspace > FayintSaveMap")
+      end
+    end)
+
+    if not ok then
+      f5(0, "Error", "Save failed - Check console")
+
+      startButton.Text = "❌ FAILED"
+      startButton.BackgroundColor3 = Color3.fromRGB(220, 20, 60)
+
+      f1("❌ Save Failed", [[
+Check console for details (F9)
+Join Discord for support]], "rbxassetid://6023426919")
+
+      warn("[SaveMap] Error:", result)
+      warn("[SaveMap] Join Discord for support if problem persists")
+    end
+
+    task.wait(3)
+
+    if flag then
+      startButton.Text = "🚀 START SAVING"
+      startButton.BackgroundColor3 = color
+
+      cancelButton.Visible = false
+      howToButton.Visible = true
+      flag = false
+    end
+  end)
+end)
+
+cancelButton.MouseButton1Click:Connect(function()
+  if not flag then
+    return
+  end
+
+  flag2 = true
+  flag = false
+
+  startButton.Text = "🚀 START SAVING"
+  startButton.BackgroundColor3 = color
+
+  cancelButton.Visible = false
+  howToButton.Visible = true
+  f5(0, "Cancelled", "Save process was cancelled by user")
+  f1("Save Cancelled", "Save process was cancelled", "rbxassetid://6023426925")
+end)
+
+howToButton.MouseButton1Click:Connect(function()
+  local saveMapGuide = Instance.new("ScreenGui")
+  saveMapGuide.Name = "SaveMapGuide"
+  saveMapGuide.Parent = coreGui or localPlayer:WaitForChild("PlayerGui")
+  saveMapGuide.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+
+  local frame3 = Instance.new("Frame")
+  frame3.Parent = saveMapGuide
+  frame3.BackgroundColor3 = Color3.fromRGB(15, 8, 12)
+  frame3.BorderSizePixel = 0
+  frame3.AnchorPoint = Vector2.new(0.5, 0.5)
+  frame3.Position = UDim2.new(0.5, 0, 0.5, 0)
+  frame3.Size = UDim2.new(0, 450, 0, 300)
+  frame3.ZIndex = 2
+
+  local uiCorner16 = Instance.new("UICorner")
+  uiCorner16.CornerRadius = UDim.new(0, 12)
+  uiCorner16.Parent = frame3
+
+  local uiStroke4 = Instance.new("UIStroke")
+  uiStroke4.Color = color
+  uiStroke4.Thickness = 2
+  uiStroke4.Parent = frame3
+
+  local textLabel2 = Instance.new("TextLabel")
+  textLabel2.Parent = frame3
+  textLabel2.BackgroundTransparency = 1
+  textLabel2.Position = UDim2.new(0, 0, 0, 20)
+  textLabel2.Size = UDim2.new(1, 0, 0, 40)
+  textLabel2.Font = Enum.Font.GothamBold
+  textLabel2.Text = "📝 DETAILED SAVEMAP GUIDE"
+  textLabel2.TextColor3 = Color3.fromRGB(255, 200, 200)
+  textLabel2.TextSize = 20
+  textLabel2.TextStrokeTransparency = 0.7
+
+  local frame4 = Instance.new("Frame")
+  frame4.Parent = frame3
+  frame4.BackgroundTransparency = 1
+  frame4.Position = UDim2.new(0, 40, 0, 70)
+  frame4.Size = UDim2.new(1, -80, 0, 160)
+
+  for index, value7 in ipairs({
+    "1. TERRAIN SUPPORT:", "   • Use PAID executors for terrain copying",
+    "   • Free executors may NOT support terrain", "", "2. FILE LOCATION:",
+    "   • Executor Folder > Workspace > FayintSaveMap", "   • Files saved as .rbxlx format",
+    "", "3. SAVE MODES:", "   • FULL - Save everything",
+    "   • OPT - Optimized (recommended)", "   • SCRIPTS - Scripts only", "", "4. IF ERROR:",
+    "   • Join Discord for support", "   • Check executor compatibility",
+    "   • Try different save mode",
+  }) do
+    local textLabel3 = Instance.new("TextLabel")
+    textLabel3.Parent = frame4
+    textLabel3.BackgroundTransparency = 1
+    textLabel3.Position = UDim2.new(0, 0, 0, (index - 1) * 20)
+    textLabel3.Size = UDim2.new(1, 0, 0, 20)
+    textLabel3.Font = Enum.Font.Gotham
+    textLabel3.Text = value7
+
+    if value7:match("^%d+%. ") then
+      textLabel3.TextColor3 = Color3.fromRGB(255, 180, 60)
+      textLabel3.Font = Enum.Font.GothamBold
+    elseif value7:match("^   •") then
+      textLabel3.TextColor3 = Color3.fromRGB(220, 180, 180)
+      textLabel3.Font = Enum.Font.Gotham
+    else
+      textLabel3.TextColor3 = Color3.fromRGB(150, 150, 150)
+    end
+
+    textLabel3.TextSize = 11
+    textLabel3.TextXAlignment = Enum.TextXAlignment.Left
+  end
+
+  local textButton6 = Instance.new("TextButton")
+  textButton6.Parent = frame3
+  textButton6.BackgroundColor3 = Color3.fromRGB(80, 30, 30)
+  textButton6.Position = UDim2.new(0.5, -60, 0, 250)
+  textButton6.Size = UDim2.new(0, 120, 0, 30)
+  textButton6.Font = Enum.Font.GothamBold
+  textButton6.Text = "❌ CLOSE GUIDE"
+  textButton6.TextColor3 = Color3.fromRGB(255, 200, 200)
+  textButton6.TextSize = 12
+
+  local uiCorner17 = Instance.new("UICorner")
+  uiCorner17.CornerRadius = UDim.new(0, 8)
+  uiCorner17.Parent = textButton6
+
+  textButton6.MouseEnter:Connect(function()
+    tweenService:Create(textButton6, TweenInfo.new(0.2), {
+      BackgroundColor3 = Color3.fromRGB(100, 40, 40),
+    }):Play()
+  end)
+
+  textButton6.MouseLeave:Connect(function()
+    tweenService:Create(textButton6, TweenInfo.new(0.2), {
+      BackgroundColor3 = Color3.fromRGB(80, 30, 30),
+    }):Play()
+  end)
+
+  textButton6.MouseButton1Click:Connect(function()
+    local create = tweenService:Create(frame3, TweenInfo.new(
+      0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out
+    ), {
+      Size = UDim2.new(0, 0, 0, 0),
+      BackgroundTransparency = 1,
+      Position = UDim2.new(0.5, 0, 0.5, 0),
+    })
+
+    create:Play()
+    create.Completed:Wait()
+
+    if saveMapGuide and saveMapGuide.Parent then
+      saveMapGuide:Destroy()
+    end
+  end)
+
+  frame3.Size = UDim2.new(0, 0, 0, 0)
+  frame3.BackgroundTransparency = 1
+
+  task.wait()
+
+  tweenService:Create(
+    frame3, TweenInfo.new(0.4, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
+    { Size = UDim2.new(0, 450, 0, 300), BackgroundTransparency = 0 }
+  ):Play()
+
+  print("\n" .. string.rep("=", 50))
+  print("📝 DETAILED SAVEMAP GUIDE")
+  print(string.rep("=", 50))
+  print("TERRAIN SUPPORT:")
+  print("• Use PAID executors for terrain copying")
+  print("• Free executors may NOT support terrain")
+  print("")
+  print("FILE LOCATION:")
+  print("• Executor Folder > Workspace > FayintSaveMap")
+  print("• Files saved as .rbxlx format")
+  print("")
+  print("SAVE MODES:")
+  print("• FULL - Save everything")
+  print("• OPT - Optimized (recommended)")
+  print("• SCRIPTS - Scripts only")
+  print("")
+  print("IF ERROR:")
+  print("• Join Discord for support")
+  print("• Try different save mode")
+  print(string.rep("=", 50))
+end)
+
+saveTab.MouseButton1Click:Connect(function() f3("Save") end)
+settingsTab.MouseButton1Click:Connect(function() f3("Settings") end)
+
+close.MouseButton1Click:Connect(function()
+  if main2.Visible then
+    tweenService:Create(main2, TweenInfo.new(
+      0.25, Enum.EasingStyle.Back, Enum.EasingDirection.In
+    ), { Size = UDim2.new(0, 0, 0, 0) }):Play()
+
+    task.wait(0.25)
+    main2.Visible = false
+  else
+    main2.Visible = true
+    main2.Size = UDim2.new(0, 0, 0, 0)
+
+    tweenService:Create(main2, TweenInfo.new(
+      0.3, Enum.EasingStyle.Back, Enum.EasingDirection.Out
+    ), { Size = UDim2.new(0.360000014, 0, 0.419999987, 0) }):Play()
+  end
+end)
+
+close.MouseEnter:Connect(function() close.BackgroundColor3 = Color3.fromRGB(60, 60, 60) end)
+close.MouseLeave:Connect(function() close.BackgroundColor3 = Color3.fromRGB(45, 45, 45) end)
+
+howToButton.MouseEnter:Connect(function()
+  howToButton.BackgroundColor3 = Color3.fromRGB(60, 60, 100)
+end)
+
+howToButton.MouseLeave:Connect(function()
+  howToButton.BackgroundColor3 = Color3.fromRGB(50, 50, 80)
+end)
+
+local function getText()
+  local t = os.date("*t")
+  return string.format("FayintSaveMap", t.day, t.month, t.hour, t.min)
+end
+
+filenameBox.Text = getText()
+f5(0, "Idle", "Ready to save")
+statusLabel.Text = "Status: Ready"
+main2.Size = UDim2.new(0, 0, 0, 0)
+
+tweenService:Create(
+  main2, TweenInfo.new(0.5, Enum.EasingStyle.Back, Enum.EasingDirection.Out),
+  { Size = UDim2.new(0.360000014, 0, 0.419999987, 0) }
+):Play()
+
+f1(
+  "🛠️ Universal SaveMap", string.format("Running on %s executor", v5),
+  "rbxassetid://6023426925"
+)
+
+print("[SaveMap] GUI Loaded - Executor:", v5)
+print("[SaveMap] Note: Some executors may not support terrain saving")
+print("[SaveMap] Files saved to: Executor Folder > Workspace > FayintSaveMap")
+
+-- https://leakd.fr
